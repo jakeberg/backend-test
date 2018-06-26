@@ -1,22 +1,17 @@
 const express = require('express');
 const app = express();
-const cors = require('cors');
 const { Client } = require('pg');
+const cors = require('cors');
 
 app.use(express.json());
 app.use(cors());
 
-
 const client = new Client({
-    database: 'social-media'
-});
-
-// route handlers go here
-app.get('/users', (req, res) => {
-    client.query('SELECT * FROM users', (err, result) => {
-        res.json(result.rows);
-    });
-});
+    host: 'ec2-54-83-60-13.compute-1.amazonaws.com',
+    port: 5432,
+    user: 'rusydaqqqjugzx',
+    password: '6535fa0b8e78d2784f86fca4e503302f445f1f504d6f651ec4fbb64aef8274be',
+  })
 
 app.get("/", (req, res) => {
     res.json("cheesedingle")
@@ -24,4 +19,11 @@ app.get("/", (req, res) => {
 
 app.listen( process.env.PORT || 3000, () => {
     console.log("this is working")
+    client.connect((err) => {
+        if (err) {
+          console.error('connection error', err.stack)
+        } else {
+          console.log('connected')
+        }
+      })
 })
