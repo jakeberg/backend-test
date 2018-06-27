@@ -13,6 +13,13 @@ const client = new Client({
     password: '3b85f66a4ec80861f06c3944a3d4347242a3256d0e086a09af6b2889eb9af0e8',
   })
 
+  const client = new Client({
+    host: 'ec2-184-73-240-228.compute-1.amazonaws.com',
+    user: 'ciwnpufebecnav',
+    password: '3b85f66a4ec80861f06c3944a3d4347242a3256d0e086a09af6b2889eb9af0e8',
+    database: 'postgres://ciwnpufebecnav:3b85f66a4ec80861f06c3944a3d4347242a3256d0e086a09af6b2889eb9af0e8@ec2-184-73-240-228.compute-1.amazonaws.com:5432/d5d5ijhhn9te54'
+  })
+
 //   const client = new Client({
 //     Host: 'ec2-184-73-240-228.compute-1.amazonaws.com',
 //     Database: 'd5d5ijhhn9te54',
