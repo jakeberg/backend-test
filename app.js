@@ -7,15 +7,15 @@ app.use(express.json());
 app.use(cors());
 
 const client = new Client({
-    host: 'ec2-54-83-60-13.compute-1.amazonaws.com',
-    port: 5432,
-    user: 'rusydaqqqjugzx',
-    password: '6535fa0b8e78d2784f86fca4e503302f445f1f504d6f651ec4fbb64aef8274be',
+    Host: 'ec2-54-83-60-13.compute-1.amazonaws.com',
+    Database: 'd5fv5tvq2hd8eo',
+    User: 'rusydaqqqjugzx',
+    Port: 5432,
+    Password: '6535fa0b8e78d2784f86fca4e503302f445f1f504d6f651ec4fbb64aef8274be',
+    URI: 'postgres://rusydaqqqjugzx:6535fa0b8e78d2784f86fca4e503302f445f1f504d6f651ec4fbb64aef8274be@ec2-54-83-60-13.compute-1.amazonaws.com:5432/d5fv5tvq2hd8eo',
+    HerokuCLI: 'heroku pg:psql postgresql-cubed-37599 --app team-cheese-backend' 
   })
 
-// const client = new Client({
-//     database: "users"
-// });
 
 app.get("/", (req, res) => {
     res.json("cheesedingle")
