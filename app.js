@@ -6,12 +6,12 @@ const cors = require('cors');
 app.use(express.json());
 app.use(cors());
 
-// const client = new Client({
-//     host: 'ec2-184-73-240-228.compute-1.amazonaws.com',
-//     port: 5432,
-//     user: 'ciwnpufebecnav',
-//     password: '3b85f66a4ec80861f06c3944a3d4347242a3256d0e086a09af6b2889eb9af0e8',
-//   })
+const client = new Client({
+    host: 'ec2-184-73-240-228.compute-1.amazonaws.com',
+    port: 5432,
+    user: 'ciwnpufebecnav',
+    password: '3b85f66a4ec80861f06c3944a3d4347242a3256d0e086a09af6b2889eb9af0e8',
+  })
 
 //   const client = new Client({
 //     Host: 'ec2-184-73-240-228.compute-1.amazonaws.com',
