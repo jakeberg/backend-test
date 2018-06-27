@@ -13,21 +13,25 @@ app.use(cors());
 //     password: '6535fa0b8e78d2784f86fca4e503302f445f1f504d6f651ec4fbb64aef8274be',
 //   })
 
-const client = new Client();
+const client = new Client({
+    database: "users"
+});
 
 app.get("/", (req, res) => {
     res.json("cheesedingle")
 });
 
-app.post('/users', (req,res) => {
+app.post('/users', (req, res) => {
+    console.log("Endpoint hit")
     console.log(req.body)
-    const text = "INSERT INTO users(name, age, status) VALUES ('jake', 29, 'testing')"
-    client.query(text, (err, result) => {
-        res.send(result.rows)
+    const text = 'INSERT INTO users (name, age, status) VALUES ($1, $2, $3) RETURNING *';
+    const values = ['jake', 29, "status test"];
+    client.query(text, values, (err, result) => {
+        console.log(result.rows[0]);
     });
 });
 
 app.listen( process.env.PORT || 3000, () => {
     console.log("this is working")
-    client.connect();
+    client.connect()
 })
