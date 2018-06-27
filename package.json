@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "heroku-postbuild": "npm install --production"
+    "heroku-postbuild": "npm install --production",
+    "postdeploy": "psql $postgres://ciwnpufebecnav:3b85f66a4ec80861f06c3944a3d4347242a3256d0e086a09af6b2889eb9af0e8@ec2-184-73-240-228.compute-1.amazonaws.com:5432/d5d5ijhhn9te54 -f seed.sql"
   },
   "author": "",
   "license": "ISC",
