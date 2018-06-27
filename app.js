@@ -7,20 +7,20 @@ app.use(express.json());
 app.use(cors());
 
 const client = new Client({
-    host: 'ec2-54-83-60-13.compute-1.amazonaws.com',
+    host: 'ec2-184-73-240-228.compute-1.amazonaws.com',
     port: 5432,
-    user: 'rusydaqqqjugzx',
-    password: '6535fa0b8e78d2784f86fca4e503302f445f1f504d6f651ec4fbb64aef8274be',
+    user: 'ciwnpufebecnav',
+    password: '3b85f66a4ec80861f06c3944a3d4347242a3256d0e086a09af6b2889eb9af0e8',
   })
 
 //   const client = new Client({
-//     Host: 'ec2-54-83-60-13.compute-1.amazonaws.com',
-//     Database: 'd5fv5tvq2hd8eo',
-//     User: 'rusydaqqqjugzx',
+//     Host: 'ec2-184-73-240-228.compute-1.amazonaws.com',
+//     Database: 'd5d5ijhhn9te54',
+//     User: 'ciwnpufebecnav',
 //     Port: 5432,
-//     Password: '6535fa0b8e78d2784f86fca4e503302f445f1f504d6f651ec4fbb64aef8274be',
-//     URI: 'postgres://rusydaqqqjugzx:6535fa0b8e78d2784f86fca4e503302f445f1f504d6f651ec4fbb64aef8274be@ec2-54-83-60-13.compute-1.amazonaws.com:5432/d5fv5tvq2hd8eo',
-//     HerokuCLI: 'heroku pg:psql postgresql-cubed-37599 --app team-cheese-backend' 
+//     Password: '3b85f66a4ec80861f06c3944a3d4347242a3256d0e086a09af6b2889eb9af0e8',
+//     URI: 'postgres://ciwnpufebecnav:3b85f66a4ec80861f06c3944a3d4347242a3256d0e086a09af6b2889eb9af0e8@ec2-184-73-240-228.compute-1.amazonaws.com:5432/d5d5ijhhn9te54',
+//     HerokuCLI: 'heroku pg:psql postgresql-cubic-50344 --app team-cheese-backend' 
 //   })
 
 app.get("/", (req, res) => {
