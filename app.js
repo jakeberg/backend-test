@@ -27,7 +27,7 @@ app.post('/users', (req, res) => {
     const text = 'INSERT INTO users (username, bio) VALUES ($1, $2) RETURNING *';
     const values = ['hello', "status"];
     client.query(text, values, (err, result) => {
-        console.log(result.rows[0]);
+        console.log(result.rows);
     });
 });
 
