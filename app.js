@@ -21,6 +21,12 @@ app.get("/", (req, res) => {
     res.json("This cheesedingle is runnin'")
 });
 
+app.get("/all", (req, res) => {
+    client.query('SELECT * FROM users', (err, result) => {
+        res.send(result.rows);
+    });
+});
+
 app.post('/users', (req, res) => {
     let name = req.body.name;
     let age = req.body.age;
