@@ -22,16 +22,19 @@ app.get("/", (req, res) => {
 });
 
 app.post('/users', (req, res) => {
-    let name = req.body.name
-    let age = req.body.age
-    let status = req.body.status
+    let name = req.body.name;
+    let age = req.body.age;
+    let status = req.body.status;
 
     const text = 'INSERT INTO users (name, age, status) VALUES ($1, $2, $3) RETURNING *';
-    const values = [`${name}, ${age}, ${status}`];
+    const values = [name, age, status];
+
     client.query(text, values, (err, result) => {
-        console.log(result.rows);
+        console.log(result.rows[0]);
     });
+
     res.status(201)
+    res.send("it's working")
 });
 
 app.listen( process.env.PORT || 3000, () => {
