@@ -15,7 +15,7 @@ app.get("/", (req, res) => {
     res.json("cheesedingle")
 });
 
-app.get('/users', (req, res) => {
+app.post('/users', (req, res) => {
 
     const text = 'INSERT INTO users (name, age, status) VALUES ($1, $2, $3) RETURNING *';
     const values = ['hello', 29, "status"];
