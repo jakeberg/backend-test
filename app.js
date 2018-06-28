@@ -7,21 +7,31 @@ app.use(express.json());
 app.use(cors());
 
 const client = new Client({
+
+    //These pairs are for deploying to heroku
     connectionString: process.env.DATABASE_URL,
     ssl: true,
+
+    //This value is all you need to run locally
+    // database: 'users'
+
   });
 
 app.get("/", (req, res) => {
-    res.json("cheesedingle")
+    res.json("This cheesedingle is runnin'")
 });
 
 app.post('/users', (req, res) => {
-    console.log(req.body)
+    let name = req.body.name
+    let age = req.body.age
+    let status = req.body.status
+
     const text = 'INSERT INTO users (name, age, status) VALUES ($1, $2, $3) RETURNING *';
-    const values = ['hello', 29, "status"];
+    const values = [`${name}, ${age}, ${status}`];
     client.query(text, values, (err, result) => {
-        console.log(result.rows[0]);
+        console.log(result.rows);
     });
+    res.status(201)
 });
 
 app.listen( process.env.PORT || 3000, () => {
