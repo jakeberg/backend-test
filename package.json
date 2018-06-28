@@ -20,5 +20,14 @@
   "engines": {
     "node": "10.1.0",
     "npm": "5.6.0"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jakeberg/team-cheese-backend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jakeberg/team-cheese-backend/issues"
+  },
+  "homepage": "https://github.com/jakeberg/team-cheese-backend#readme"
 }
