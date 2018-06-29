@@ -33,7 +33,7 @@ app.post('/users', (req, res) => {
     let status = req.body.status;
 
     const text = 'INSERT INTO users (name, phone, address, manager, pickup_date, pickup_time) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
-    const values = ["dairy farm", 1234567, "1234 Milky Way", "Senor Queso", "08-Jan-1999", "04:05:00"];
+    const values = ["dairy farm", 1234567, "1234 Milky Way", "Senor Queso", 123456, 123456];
     client.query(text, values, (err, result) => {
         console.log(result.rows[0]);
     });
