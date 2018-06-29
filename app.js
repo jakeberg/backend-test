@@ -32,9 +32,8 @@ app.post('/users', (req, res) => {
     let age = req.body.age;
     let status = req.body.status;
 
-    const text = 'INSERT INTO users (name, age, status) VALUES ($1, $2, $3) RETURNING *';
-    const values = [name, age, status];
-
+    const text = 'INSERT INTO users (name, phone, address, manager, pickup_time, pickup_date) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
+    const values = ["dairy farm", 1234567, "1234 Milky Way", "Senor Queso", "04:05 AM", "08-Jan-1999"];
     client.query(text, values, (err, result) => {
         console.log(result.rows[0]);
     });
