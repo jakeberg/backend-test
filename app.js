@@ -27,7 +27,7 @@ app.get("/all", (req, res) => {
     });
 });
 
-app.post('/adddonor', (req, res) => {
+app.post('/add-donor', (req, res) => {
     let name = req.body.name;
     let phone = req.body.phone;
     let address = req.body.address;
