@@ -27,13 +27,20 @@ app.get("/all", (req, res) => {
     });
 });
 
-app.post('/users', (req, res) => {
+app.post('/adddonor', (req, res) => {
     let name = req.body.name;
-    let age = req.body.age;
-    let status = req.body.status;
+    let phone = req.body.phone;
+    let address = req.body.address;
+    let manager = req.body.manager;
+    let pickup_date = req.body.date;
+    let pickup_time = req.body.time;
+
+    let phoneNumber = parseInt(phone)
+
+    console.log(req.body, "phone:", phoneNumber)
 
     const text = 'INSERT INTO donors (name, phone, address, manager, pickup_date, pickup_time) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
-    const values = ["dairy farm", 1234567, "1234 Milky Way", "Senor Queso", "08-Jan-1999", "04:05:00"];
+    const values = [name, phoneNumber, address, manager, pickup_date, pickup_time];
     client.query(text, values, (err, result) => {
         console.log(result.rows[0]);
     });
@@ -43,6 +50,6 @@ app.post('/users', (req, res) => {
 });
 
 app.listen( process.env.PORT || 3000, () => {
-    console.log("this is working")
+    console.log("app is running")
     client.connect()
 })
