@@ -42,13 +42,7 @@ app.post('/adddonor', (req, res) => {
     const text = 'INSERT INTO donors (name, phone, address, manager, pickup_date, pickup_time) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
     const values = [name, phoneNumber, address, manager, pickup_date, pickup_time];
     client.query(text, values, (err, result) => {
-        console.log(result.rows[0]);
-        let data = {
-            id: result.rows[0].id,
-            name: result.rows[0].name
-        }
-        res.status(201)
-        res.send(data)
+        res.send('Your donor was added to the list!')
     });
 });
 
