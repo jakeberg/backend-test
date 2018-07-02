@@ -22,7 +22,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/all", (req, res) => {
-    client.query('SELECT * FROM users', (err, result) => {
+    client.query('SELECT * FROM donors', (err, result) => {
         res.send(result.rows);
     });
 });
