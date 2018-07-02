@@ -27,6 +27,20 @@ app.get("/all", (req, res) => {
     });
 });
 
+app.post('/addgroup', (req, res) => {
+    let group_name = req.body.group_name;
+    let bio = req.body.bio;
+    let image_location = req.body.image_location;
+
+    const text = 'INSERT INTO groups (group_name, bio, image_location) VALUES ($1, $2, $3) RETURNING *';
+    const values = [group_name, bio, image_location];
+    client.query(text, values, (err, result) => {
+        console.log(result.rows[0])
+        res.send('Your group was registered')
+    })
+})
+
+
 app.post('/adddonor', (req, res) => {
     let name = req.body.name;
     let phone = req.body.phone;
