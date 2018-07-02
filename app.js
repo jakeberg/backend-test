@@ -40,7 +40,7 @@ app.post('/adddonor', (req, res) => {
     console.log(name,phoneNumber, address, manager, pickup_date, pickup_time)
 
     const text = 'INSERT INTO donors (name, phone, address, manager, pickup_date, pickup_time) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
-    const values = ["name", 12345, "address", "manager", '1999-02-02', '02:02:02'];
+    const values = [name, phoneNumber, address, manager, pickup_date, pickup_time];
     client.query(text, values, (err, result) => {
         console.log(result.rows[0]);
     });
