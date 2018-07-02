@@ -44,7 +44,7 @@ app.post('/adddonor', (req, res) => {
     client.query(text, values, (err, result) => {
         console.log(result.rows[0]);
         res.status(201)
-        res.send("it's working")
+        res.send(result.rows[0])
     });
 });
 
