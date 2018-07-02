@@ -13,7 +13,7 @@ const client = new Client({
     ssl: true,
 
     //This value is all you need to run locally
-    // database: 'users'
+    // database: 'donors'
 
   });
 
@@ -37,10 +37,10 @@ app.post('/adddonor', (req, res) => {
 
     let phoneNumber = parseInt(phone)
 
-    console.log(req.body, "phone:", phoneNumber)
+    console.log(name,phoneNumber, address, manager, pickup_date, pickup_time)
 
     const text = 'INSERT INTO donors (name, phone, address, manager, pickup_date, pickup_time) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
-    const values = [name, phoneNumber, address, manager, pickup_date, pickup_time];
+    const values = ["name", 12345, "address", "manager", '1999-02-02', '02:02:02'];
     client.query(text, values, (err, result) => {
         console.log(result.rows[0]);
     });
