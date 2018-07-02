@@ -43,8 +43,12 @@ app.post('/adddonor', (req, res) => {
     const values = [name, phoneNumber, address, manager, pickup_date, pickup_time];
     client.query(text, values, (err, result) => {
         console.log(result.rows[0]);
+        let data = {
+            id: result.rows[0].id,
+            name: result.rows[0].name
+        }
         res.status(201)
-        res.send(result.rows[0])
+        res.send(data)
     });
 });
 
