@@ -2,9 +2,11 @@ const express = require('express');
 const app = express();
 const { Client } = require('pg');
 const cors = require('cors');
+const fileUpload = require('express-fileupload');
 
 app.use(express.json());
 app.use(cors());
+app.use(fileUpload());
 
 const client = new Client({
 
@@ -30,6 +32,16 @@ app.get("/all", (req, res) => {
 app.get('/groups', (req, res) => {
     client.query('SELECT * FROM groups', (err, result) => {
         res.send(result.rows)
+    })
+})
+
+app.post('/photoupload', (req, res) => {
+    let profilePicture = req.files.profilePicture
+    profilePicture.mv(`./views/${req.files.profilePicture.name}`, function(err) {
+        if (err)
+          return res.status(500).send(err);
+     
+        res.send('File uploaded!');
     })
 })
 
