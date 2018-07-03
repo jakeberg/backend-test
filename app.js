@@ -29,7 +29,7 @@ app.get("/all", (req, res) => {
 
 app.get('/groups', (req, res) => {
     client.query('SELECT * FROM groups', (err, result) => {
-        res.send(results.rows)
+        res.send(result.rows)
     })
 })
 
