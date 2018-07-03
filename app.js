@@ -2,9 +2,11 @@ const express = require('express');
 const app = express();
 const { Client } = require('pg');
 const cors = require('cors');
+const fileUpload = require('express-fileupload');
 
 app.use(express.json());
 app.use(cors());
+app.use(fileUpload());
 
 const client = new Client({
 
@@ -27,6 +29,25 @@ app.get("/all", (req, res) => {
     });
 });
 
+app.get('/groups', (req, res) => {
+    client.query('SELECT * FROM groups', (err, result) => {
+        res.send(result.rows)
+    })
+})
+
+app.post('/addgroup', (req, res) => {
+    let group_name = req.body.group_name;
+    let bio = req.body.bio;
+
+    const text = 'INSERT INTO groups (group_name, bio) VALUES ($1, $2) RETURNING *';
+    const values = [group_name, bio];
+    client.query(text, values, (err, result) => {
+        console.log(result.rows[0])
+        res.send('Your group was registered')
+    })
+})
+
+
 app.post('/adddonor', (req, res) => {
     let name = req.body.name;
     let phone = req.body.phone;
@@ -42,6 +63,8 @@ app.post('/adddonor', (req, res) => {
     const text = 'INSERT INTO donors (name, phone, address, manager, pickup_date, pickup_time) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
     const values = [name, phoneNumber, address, manager, pickup_date, pickup_time];
     client.query(text, values, (err, result) => {
+        console.log(err)
+        console.log(result.rows)
         res.send('Your donor was added to the list!')
     });
 });
