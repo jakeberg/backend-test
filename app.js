@@ -27,6 +27,12 @@ app.get("/all", (req, res) => {
     });
 });
 
+app.get('/groups', (req, res) => {
+    client.query('SELECT * FROM groups', (err, result) => {
+        res.send(results.rows)
+    })
+})
+
 app.post('/addgroup', (req, res) => {
     let group_name = req.body.group_name;
     let bio = req.body.bio;
