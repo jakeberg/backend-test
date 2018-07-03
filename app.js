@@ -35,23 +35,12 @@ app.get('/groups', (req, res) => {
     })
 })
 
-app.post('/photoupload', (req, res) => {
-    let profilePicture = req.files.profilePicture
-    profilePicture.mv(`./views/${req.files.profilePicture.name}`, function(err) {
-        if (err)
-          return res.status(500).send(err);
-     
-        res.send('File uploaded!');
-    })
-})
-
 app.post('/addgroup', (req, res) => {
     let group_name = req.body.group_name;
     let bio = req.body.bio;
-    let image_location = req.body.image_location;
 
-    const text = 'INSERT INTO groups (group_name, bio, image_location) VALUES ($1, $2, $3) RETURNING *';
-    const values = [group_name, bio, image_location];
+    const text = 'INSERT INTO groups (group_name, bio) VALUES ($1, $2) RETURNING *';
+    const values = [group_name, bio];
     client.query(text, values, (err, result) => {
         console.log(result.rows[0])
         res.send('Your group was registered')
