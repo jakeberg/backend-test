@@ -11,11 +11,11 @@ app.use(fileUpload());
 const client = new Client({
 
     //These pairs are for deploying to heroku
-    connectionString: process.env.DATABASE_URL,
-    ssl: true,
+    // connectionString: process.env.DATABASE_URL,
+    // ssl: true,
 
     //This value is all you need to run locally
-    // database: 'donors'
+    database: 'donors'
 
 });
 
@@ -50,26 +50,28 @@ app.post('/addgroup', (req, res) => {
 
 app.post('/adddonor', (req, res) => {
     let name = req.body.name;
-    let phone = req.body.phone;
+    let phone = parseInt(req.body.phone);
     let address = req.body.address;
     let manager = req.body.manager;
-    let pickup_date = req.body.date;
+    let pickup_date = req.body.date.slice(0,10);
     let pickup_time = req.body.time;
+    let days = req.body.days;
 
-    let phoneNumber = parseInt(phone)
-
-    console.log(name, phoneNumber, address, manager, pickup_date, pickup_time)
+    console.log(name, phone, address, manager, pickup_date, pickup_time)
+    console.log(days)
 
     const text = 'INSERT INTO donors (name, phone, address, manager, pickup_date, pickup_time) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
-    const values = [name, phoneNumber, address, manager, pickup_date, pickup_time];
+    const values = [name, phone, address, manager, pickup_date, pickup_time];
     client.query(text, values, (err, result) => {
         console.log(err)
-        console.log(result.rows)
+        console.log(result.rows[0])
         res.send('Your donor was added to the list!')
     });
 });
 
-app.listen(process.env.PORT || 3000, () => {
-    console.log("app is running")
+const port = 3000
+
+app.listen(process.env.PORT || port, () => {
+    console.log("app is running at port: ",  port)
     client.connect()
 })
