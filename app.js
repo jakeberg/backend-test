@@ -11,13 +11,11 @@ app.use(fileUpload());
 const client = new Client({
 
     //These pairs are for deploying to heroku
-    // connectionString: process.env.DATABASE_URL,
-    // ssl: true,
+    connectionString: process.env.DATABASE_URL,
+    ssl: true,
 
     //This value is all you need to run locally
-    database: "donors",
-    // database: "volunteers"
-    
+    // database: "donors",
 
 });
 
@@ -38,11 +36,41 @@ app.get("/donation_volunteer", (req, res) => {
 });
 
 app.get('/volunteers', (req, res) => {
-    console.log("hit")
     client.query('SELECT * FROM volunteers', (err, result) => {
-        console.log(JSON.stringify(result.rows))
-        let data = JSON.stringify(result.rows);
-        res.send(result.rows)
+        console.log(result.rows)
+        res.json(result.rows)
+    })
+})
+
+app.get('/home', (req, res) => {
+
+    client.query("SELECT * FROM donors", (err, donors) => {
+        client.query("SELECT * FROM volunteers", (err, volunteers) => {
+            donors.rows.forEach(donor => {
+                let pickupDays = [];
+                for (let day in donor.pickup_days) {
+                    if (donor.pickup_days[day]) {
+                        pickupDays.push(day);
+                    }
+                }
+                let names = [];
+                volunteers.rows.forEach(volunteer => {
+                    for (let day in volunteer.days_available) {
+                        if (volunteer.days_available[day]) {
+                            let dayPlaceholder = day;
+                            if(pickupDays.includes(dayPlaceholder)){
+                                if(!names.includes(volunteer.name)){
+                                    names.push(volunteer.name )
+                                }
+                            }
+                        }
+                    }
+                });
+                donor.days_available = pickupDays;
+                donor.available_workers = names;
+            });
+            res.send(donors.rows)
+        })
     })
 })
 
@@ -51,7 +79,6 @@ app.post('/addvolunteer', (req, res) => {
     let phone = parseInt(req.body.phone);
     let email = req.body.email;
     let days = JSON.stringify(req.body.days);
-    // console.log(volunteer_name, phone, email, days)
 
     const text = 'INSERT INTO volunteers (name, phone, email, days_available) VALUES ($1, $2, $3, $4) RETURNING *';
     const values = [volunteer_name, phone, email, days];
@@ -59,9 +86,8 @@ app.post('/addvolunteer', (req, res) => {
         if (err) {
             console.log(err)
         }
-
-        
-        res.send(JSON.stringify(result.rows[0]))
+        console.log(result.rows)
+        res.json(result.rows[0])
     })
 })
 
@@ -73,10 +99,10 @@ app.post('/adddonor', (req, res) => {
     let manager = req.body.manager;
     let pickup_date = req.body.date;
     let pickup_time = req.body.time;
-    // let days = req.body.days;
+    let days = JSON.stringify(req.body.days);
 
-    const text = 'INSERT INTO donors (name, phone, address, manager, pickup_date, pickup_time) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
-    const values = [name, phone, address, manager, pickup_date, pickup_time];
+    const text = 'INSERT INTO donors (name, phone, address, manager, pickup_date, pickup_time, pickup_days) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *';
+    const values = [name, phone, address, manager, pickup_date, pickup_time, days];
     client.query(text, values, (err, result) => {
         if (err) {
             console.log(err)
@@ -89,6 +115,6 @@ app.post('/adddonor', (req, res) => {
 const port = 3000
 
 app.listen(process.env.PORT || port, () => {
-    console.log("app is running at port: ",  port)
+    console.log("app is running at port: ", port)
     client.connect()
 })
