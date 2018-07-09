@@ -86,7 +86,6 @@ app.post('/addvolunteer', (req, res) => {
         if (err) {
             console.log(err)
         }
-        console.log(result.rows)
         res.json(result.rows[0])
     })
 })
@@ -108,8 +107,7 @@ app.post('/adddonor', (req, res) => {
         if (err) {
             console.log(err)
         }
-        console.log(result.rows[0])
-        res.send(result.rows[0])
+        res.json(result.rows[0])
     });
 });
 
