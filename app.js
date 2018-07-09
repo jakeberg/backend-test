@@ -15,7 +15,9 @@ const client = new Client({
     // ssl: true,
 
     //This value is all you need to run locally
-    database: "donors"
+    database: "donors",
+    // database: "volunteers"
+    
 
 });
 
@@ -29,8 +31,17 @@ app.get("/all", (req, res) => {
     });
 });
 
-app.get('/groups', (req, res) => {
-    client.query('SELECT * FROM groups', (err, result) => {
+app.get("/donation_volunteer", (req, res) => {
+    client.query('SELECT * FROM donors', (err, result) => {
+        result.rows
+    });
+});
+
+app.get('/volunteers', (req, res) => {
+    console.log("hit")
+    client.query('SELECT * FROM volunteers', (err, result) => {
+        console.log(JSON.stringify(result.rows))
+        let data = JSON.stringify(result.rows);
         res.send(result.rows)
     })
 })
@@ -40,16 +51,17 @@ app.post('/addvolunteer', (req, res) => {
     let phone = parseInt(req.body.phone);
     let email = req.body.email;
     let days = JSON.stringify(req.body.days);
-    console.log(volunteer_name, phone, email, days)
+    // console.log(volunteer_name, phone, email, days)
 
-    const text = 'INSERT INTO volunteers (name, phone, email, days_available) VALUES ($1, $2, $3) RETURNING *';
+    const text = 'INSERT INTO volunteers (name, phone, email, days_available) VALUES ($1, $2, $3, $4) RETURNING *';
     const values = [volunteer_name, phone, email, days];
     client.query(text, values, (err, result) => {
         if (err) {
             console.log(err)
         }
-        console.log(result.rows[0])
-        res.send('Your group was registered')
+
+        
+        res.send(JSON.stringify(result.rows[0]))
     })
 })
 
@@ -69,8 +81,8 @@ app.post('/adddonor', (req, res) => {
         if (err) {
             console.log(err)
         }
-        console.log(result.rows)
-        res.send('Your donor was added to the list!')
+        console.log(result.rows[0])
+        res.send(result.rows[0])
     });
 });
 
