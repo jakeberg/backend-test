@@ -101,12 +101,10 @@ app.post('/adddonor', (req, res) => {
     let phone = parseInt(req.body.phone);
     let address = req.body.address;
     let manager = req.body.manager;
-    let pickup_date = req.body.date;
-    let pickup_time = req.body.time;
     let pickup_days = JSON.stringify(req.body.days);
 
-    const text = 'INSERT INTO donors (name, phone, address, manager, pickup_date, pickup_time, pickup_days) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *';
-    const values = [name, phone, address, manager, pickup_date, pickup_time, pickup_days];
+    const text = 'INSERT INTO donors (name, phone, address, manager, pickup_days) VALUES ($1, $2, $3, $4, $5) RETURNING *';
+    const values = [name, phone, address, manager, pickup_days];
     client.query(text, values, (err, result) => {
         if (err) {
             console.log(err)
