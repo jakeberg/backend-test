@@ -46,29 +46,34 @@ app.get('/home', (req, res) => {
 
     client.query("SELECT * FROM donors", (err, donors) => {
         client.query("SELECT * FROM volunteers", (err, volunteers) => {
+
             donors.rows.forEach(donor => {
+
                 let pickupDays = [];
                 for (let day in donor.pickup_days) {
                     if (donor.pickup_days[day]) {
                         pickupDays.push(day);
                     }
                 }
-                let names = [];
+
+                let daysWithWorkers = { Sunday: [], Monday: [], Tuesday: [], Wednesday: [], Thursday: [], Friday: [], Saturday: [] }
                 volunteers.rows.forEach(volunteer => {
                     for (let day in volunteer.days_available) {
                         if (volunteer.days_available[day]) {
                             let dayPlaceholder = day;
-                            if(pickupDays.includes(dayPlaceholder)){
-                                if(!names.includes(volunteer.name)){
-                                    names.push(volunteer.name )
-                                }
+                            if (pickupDays.includes(dayPlaceholder)) {
+                                let insert = daysWithWorkers[dayPlaceholder];
+                                daysWithWorkers[dayPlaceholder] = [...insert, volunteer.name];
                             }
+
                         }
                     }
                 });
-                donor.days_available = pickupDays;
-                donor.available_workers = names;
+
+                donor.pickupDays = pickupDays;
+                donor.days_with_workers = daysWithWorkers;
             });
+
             res.send(donors.rows)
         })
     })
@@ -99,7 +104,6 @@ app.post('/adddonor', (req, res) => {
     let pickup_date = req.body.date;
     let pickup_time = req.body.time;
     let pickup_days = JSON.stringify(req.body.days);
-    console.log(pickup_days)
 
     const text = 'INSERT INTO donors (name, phone, address, manager, pickup_date, pickup_time, pickup_days) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *';
     const values = [name, phone, address, manager, pickup_date, pickup_time, pickup_days];
