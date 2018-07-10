@@ -85,8 +85,8 @@ app.post('/addvolunteer', (req, res) => {
     let email = req.body.email;
     let days = JSON.stringify(req.body.days);
 
-    const text = 'INSERT INTO volunteers (name, phone, email, days_available) VALUES ($1, $2, $3, $4) RETURNING *';
-    const values = [volunteer_name, phone, email, days];
+    const text = 'INSERT INTO volunteers (name, phone, days_available, email) VALUES ($1, $2, $3, $4) RETURNING *';
+    const values = [volunteer_name, phone, days, email];
     client.query(text, values, (err, result) => {
         if (err) {
             console.log(err)
