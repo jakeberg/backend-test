@@ -15,7 +15,7 @@ const client = new Client({
     ssl: true,
 
     //This value is all you need to run locally
-    // database: 'donors'
+    // database: "donors",
 
 });
 
@@ -29,47 +29,93 @@ app.get("/all", (req, res) => {
     });
 });
 
-app.get('/groups', (req, res) => {
-    client.query('SELECT * FROM groups', (err, result) => {
-        res.send(result.rows)
+app.get("/donation_volunteer", (req, res) => {
+    client.query('SELECT * FROM donors', (err, result) => {
+        result.rows
+    });
+});
+
+app.get('/volunteers', (req, res) => {
+    client.query('SELECT * FROM volunteers', (err, result) => {
+        console.log(result.rows)
+        res.json(result.rows)
     })
 })
 
-app.post('/addgroup', (req, res) => {
-    let group_name = req.body.group_name;
-    let bio = req.body.bio;
+app.get('/home', (req, res) => {
 
-    const text = 'INSERT INTO groups (group_name, bio) VALUES ($1, $2) RETURNING *';
-    const values = [group_name, bio];
+    client.query("SELECT * FROM donors", (err, donors) => {
+        client.query("SELECT * FROM volunteers", (err, volunteers) => {
+
+            donors.rows.forEach(donor => {
+
+                let pickupDays = [];
+                for (let day in donor.pickup_days) {
+                    if (donor.pickup_days[day]) {
+                        pickupDays.push(day);
+                    }
+                }
+
+                let daysWithWorkers = { Sunday: [], Monday: [], Tuesday: [], Wednesday: [], Thursday: [], Friday: [], Saturday: [] }
+                volunteers.rows.forEach(volunteer => {
+                    for (let day in volunteer.days_available) {
+                        if (volunteer.days_available[day]) {
+                            let dayPlaceholder = day;
+                            if (pickupDays.includes(dayPlaceholder)) {
+                                let insert = daysWithWorkers[dayPlaceholder];
+                                daysWithWorkers[dayPlaceholder] = [...insert, volunteer.name];
+                            }
+
+                        }
+                    }
+                });
+
+                donor.pickupDays = pickupDays;
+                donor.days_with_workers = daysWithWorkers;
+            });
+
+            res.send(donors.rows)
+        })
+    })
+})
+
+app.post('/addvolunteer', (req, res) => {
+    let volunteer_name = req.body.volunteer_name;
+    let phone = parseInt(req.body.phone);
+    let email = req.body.email;
+    let days = JSON.stringify(req.body.days);
+
+    const text = 'INSERT INTO volunteers (name, phone, email, days_available) VALUES ($1, $2, $3, $4) RETURNING *';
+    const values = [volunteer_name, phone, email, days];
     client.query(text, values, (err, result) => {
-        console.log(result.rows[0])
-        res.send('Your group was registered')
+        if (err) {
+            console.log(err)
+        }
+        res.json(result.rows[0])
     })
 })
 
 
 app.post('/adddonor', (req, res) => {
     let name = req.body.name;
-    let phone = req.body.phone;
+    let phone = parseInt(req.body.phone);
     let address = req.body.address;
     let manager = req.body.manager;
-    let pickup_date = req.body.date;
-    let pickup_time = req.body.time;
+    let pickup_days = JSON.stringify(req.body.days);
 
-    let phoneNumber = parseInt(phone)
-
-    console.log(name, phoneNumber, address, manager, pickup_date, pickup_time)
-
-    const text = 'INSERT INTO donors (name, phone, address, manager, pickup_date, pickup_time) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
-    const values = [name, phoneNumber, address, manager, pickup_date, pickup_time];
+    const text = 'INSERT INTO donors (name, phone, address, manager, pickup_days) VALUES ($1, $2, $3, $4, $5) RETURNING *';
+    const values = [name, phone, address, manager, pickup_days];
     client.query(text, values, (err, result) => {
-        console.log(err)
-        console.log(result.rows)
-        res.send('Your donor was added to the list!')
+        if (err) {
+            console.log(err)
+        }
+        res.json(result.rows[0])
     });
 });
 
-app.listen(process.env.PORT || 3000, () => {
-    console.log("app is running")
+const port = 3000
+
+app.listen(process.env.PORT || port, () => {
+    console.log("app is running at port: ", port)
     client.connect()
 })
