@@ -137,12 +137,11 @@ app.get('/users', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-
     client.query('SELECT * FROM users', (err, result) => {
         if (err) {
             console.log(err)
         }
-        const result = result.rows.filter(user => 
+        let result = result.rows.filter(user => 
             user["username"] == req.body["username"] 
             && user["password"] == req.body["password"] 
         )
