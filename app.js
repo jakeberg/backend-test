@@ -19,11 +19,11 @@ const client = new Client({
 
 });
 
-app.get("/", (res) => {
+app.get("/", (req, res) => {
     res.json("This cheesedingle is runnin'")
 });
 
-app.get("/all", (res) => {
+app.get("/all", (req, res) => {
     client.query('SELECT * FROM donors', (err, result) => {
         res.send(result.rows);
     });
