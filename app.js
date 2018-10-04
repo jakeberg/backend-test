@@ -126,8 +126,17 @@ app.post('/register', (req, res) => {
         res.json(result.rows[0])
     });
 });
-
 app.post('/users', (req, res) => {
+
+    client.query('SELECT * FROM users', (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+        res.send(result.rows)
+    });
+});
+
+app.post('/login', (req, res) => {
 
     client.query('SELECT * FROM users', (err, result) => {
         if (err) {
