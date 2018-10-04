@@ -141,11 +141,11 @@ app.post('/login', (req, res) => {
         if (err) {
             console.log(err)
         }
-        let result = result.rows.filter(user => 
+        let logged_in = result.rows.filter(user => 
             user["username"] == req.body["username"] 
             && user["password"] == req.body["password"] 
         )
-        res.send(result)
+        res.send(logged_in)
     });
 });
 
