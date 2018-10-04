@@ -126,7 +126,7 @@ app.post('/register', (req, res) => {
         res.json(result.rows[0])
     });
 });
-app.post('/users', (req, res) => {
+app.get('/users', (req, res) => {
 
     client.query('SELECT * FROM users', (err, result) => {
         if (err) {
