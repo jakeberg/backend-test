@@ -113,6 +113,31 @@ app.post('/adddonor', (req, res) => {
     });
 });
 
+app.post('/register', (req, res) => {
+    let username = req.body.username;
+    let password = req.body.password;
+
+    const text = 'INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *';
+    const values = [username, password];
+    client.query(text, values, (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+        res.json(result.rows[0])
+    });
+});
+
+app.get('/users', (req, res) => {
+    let username = req.body.username;
+    let password = req.body.password;
+    client.query('SELECT * FROM donors', (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+        console.log(result.rows)
+    });
+});
+
 const port = 3000
 
 app.listen(process.env.PORT || port, () => {
