@@ -142,13 +142,11 @@ app.post('/login', (req, res) => {
         if (err) {
             console.log(err)
         }
-        u = false
-        result.rows.forEach(user => {
-            if(req.body == user) {
-                u = true
-            }
-        });
-        res.send(u)
+        const result = result.rows.filter(user => 
+            user["username"] == req.body["username"] 
+            && user["password"] == req.body["password"] 
+        )
+        res.send(result)
     });
 });
 
