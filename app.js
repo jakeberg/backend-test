@@ -134,14 +134,13 @@ app.post('/users', (req, res) => {
             console.log(err)
         }
         user_check = result.rows.map(user => {
-            // if (req.body == user){
-            //     return true
-            // }else{
-            //     return false
-            // }
-            res.send(user, "body", req.body)
+            if (req.body == user){
+                return true
+            } else{
+                return false
+            }
         })
-        // res.send(user_check)
+        res.send(user_check)
     });
 });
 
