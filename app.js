@@ -140,7 +140,7 @@ app.post('/users', (req, res) => {
                 return false
             }
         })
-        res.send(user_check)
+        res.send(req.body)
     });
 });
 
