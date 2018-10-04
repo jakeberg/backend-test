@@ -130,13 +130,14 @@ app.post('/register', (req, res) => {
 app.get('/users', (req, res) => {
     let username = req.body.username;
     let password = req.body.password;
-    client.query('SELECT * FROM donors', (err, result) => {
+    client.query('SELECT * FROM users', (err, result) => {
         if (err) {
             console.log(err)
         }
-        console.log(result.rows)
+        res.send(result.rows)
     });
 });
+
 
 const port = 3000
 
