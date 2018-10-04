@@ -19,11 +19,11 @@ const client = new Client({
 
 });
 
-app.get("/", (req, res) => {
+app.get("/", (res) => {
     res.json("This cheesedingle is runnin'")
 });
 
-app.get("/all", (req, res) => {
+app.get("/all", (res) => {
     client.query('SELECT * FROM donors', (err, result) => {
         res.send(result.rows);
     });
@@ -127,14 +127,18 @@ app.post('/register', (req, res) => {
     });
 });
 
-app.get('/users', (req, res) => {
-    let username = req.body.username;
-    let password = req.body.password;
+app.post('/users', (req, res) => {
+
     client.query('SELECT * FROM users', (err, result) => {
         if (err) {
             console.log(err)
         }
-        res.send(result.rows)
+        user_check = result.rows.map(user => {
+            if (req.body == user){
+                return true
+            }
+        })
+        res.send(user_check)
     });
 });
 
