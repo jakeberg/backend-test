@@ -133,14 +133,13 @@ app.post('/users', (req, res) => {
         if (err) {
             console.log(err)
         }
-        user_check = result.rows.map(user => {
-            if (req.body == user){
-                return true
-            } else{
-                return false
+        u = false
+        result.rows.forEach(user => {
+            if(req.body == user) {
+                u = true
             }
-        })
-        res.send(req.body)
+        });
+        res.send(u)
     });
 });
 
